@@ -130,7 +130,7 @@ def _annotated_unit_test(query):
     else:
         attempted = True
         c = max(ans.iteritems(), key=lambda pair: pair[1].conf)[0]
-        if c == int(question.answer):
+        if c == int(float(question.answer)):
             correct = True
         else:
             correct = False
@@ -369,7 +369,7 @@ def _full_unit_test(combined_model, question, label_data):
     json.dump(entity_list, open(entity_list_path, 'wb'))
     json.dump(solution, open(solution_path, 'wb'))
 
-    return SimpleResult(question.key, False, False, True) # Early termination
+    # return SimpleResult(question.key, False, False, True) # Early termination
 
     print "Solving..."
     ans = solve(reduced_formulas, choice_formulas, assignment=None)#core_parse.variable_assignment)
@@ -385,7 +385,7 @@ def _full_unit_test(combined_model, question, label_data):
     else:
         idx, tv = max(ans.iteritems(), key=lambda pair: pair[1].conf)
         if tv.conf > 0.98:
-            if idx == int(question.answer):
+            if idx == int(float(question.answer)):
                 correct = True
                 penalized = False
             else:
@@ -483,11 +483,11 @@ def full_test():
     te_ids = ids1+ids2+ids3
     te_ids = ids4+ids6
 
-    load = True
+    load = False
 
     tr_questions = geoserver_interface.download_questions('aaai')
-    te_questions = geoserver_interface.download_questions('emnlp')
-    te_keys = [968, 971, 973, 1018]
+    te_questions = geoserver_interface.download_questions('official')
+    te_keys = te_questions.keys() # [968, 971, 973, 1018]
     all_questions = dict(tr_questions.items() + te_questions.items())
     tr_ids = tr_questions.keys()
     te_ids = te_questions.keys()
